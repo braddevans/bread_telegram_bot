@@ -1,7 +1,5 @@
 import {BotContext} from "./BotContext";
 import {log_debug, log_info} from "../utils/logging";
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Telegraf, Context } from "telegraf";
 import { message } from 'telegraf/filters';
 import { InlineQueryResult } from "@telegraf/types";

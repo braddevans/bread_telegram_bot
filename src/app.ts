@@ -1,11 +1,10 @@
 import {log_debug, log_info} from "./utils/logging";
-import {processURL} from "./utils/web_processing";
-import {BotContext} from "./class/BotContext";
-import {BotController} from "./class/BotController";
 import {processTextCenter} from "./utils/TextUtils";
 import {colorize} from "./utils/colorize";
+import {BotE6Watcher} from "./class/BotE6Watcher";
+import * as dotenv from 'dotenv';
 
-//processURL("https://urlr.me/LsVMj");
+dotenv.config();
 
 async function main() {
 
@@ -28,11 +27,12 @@ async function main() {
     log_info(processTextCenter(colorize.blue_e(headerText1 + "\n" + headerText2), 158, true));
 
     log_info("Start Bot Controller");
-    const botController = new BotController();
-    await botController.init();
+    //const botController = new BotController();
+    //await botController.init();
 
     log_info("Start E6 Watcher");
-
+    const botE6Watcher = new BotE6Watcher();
+    await botE6Watcher.init();
 }
 
 void main();
