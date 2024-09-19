@@ -17,6 +17,7 @@
     "typescript": "^5.4.5",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
+    "lru-cache": "^11.0.1",
     "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
