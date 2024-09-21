@@ -63,7 +63,7 @@ export interface E6Post {
     comment_count: number;
     is_favorited: boolean;
     has_notes: boolean;
-    duration: null|number;
+    duration: null | number;
 }
 
 export class E6Post {

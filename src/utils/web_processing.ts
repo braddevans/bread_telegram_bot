@@ -1,9 +1,38 @@
-import {log_debug} from "./logging";
+import {log_debug, log_info} from "./logging";
 import {colorize} from "./colorize";
+import config from "../../config.json";
+import {Other_utils} from "./Other_utils";
 
 export class WebProcessing {
+    ou: Other_utils = new Other_utils();
 
     constructor() {
+    }
+
+    async e6_api_get(path: string) {
+        log_info(`[${colorize.blue_e("Web Processing")}] E6 API GET: ${path}`);
+        // the api rate limit is 2 per second, but I have set it hard limited to 1 per 2 seconds
+        await this.ou.sleep(config.ratelimits.E621);
+
+        const username = process.env.E6_USERNAME;
+        const apiKey = process.env.E6_API_KEY;
+        const base_url = "https://e621.net";
+        if (process.env.DEBUG) {
+            log_debug(`username: ${username}`);
+            log_debug(`apiKey: ${apiKey}`);
+            log_debug(`base_url: ${base_url}`);
+            log_debug(`path: ${path}`);
+        }
+
+        return await fetch(base_url + path, {
+            method: "GET",
+            headers: {
+                "Authorization": "Basic " + btoa(`${username}:${apiKey}`),
+                "User-Agent": `E6TGBotPostWatcher/1.0 (by ${username}; on e621)`,
+            },
+        }).then((response) => {
+            return response;
+        });
     }
 
     processURL = (url: string) => {

@@ -1,31 +1,43 @@
-import {Telegraf} from "telegraf";
-import {message} from "telegraf/filters";
-import {InlineQueryResult} from "@telegraf/types";
-import {BotContext} from "./BotContext";
 import {log_info} from "../utils/logging";
 
 export class BotCommands {
-    bot: Telegraf
-    context: BotContext
 
-    public constructor(bot: Telegraf) {
+    private bot: any
+
+    constructor(bot: any) {
         this.bot = bot;
-        this.context = new BotContext(bot);
     }
+
 
     async init() {
         log_info("Init Bot Commands");
-        this.bot.command('quit', async (ctx) => {
-            // Explicit usage
-            await ctx.telegram.leaveChat(ctx.message.chat.id)
+    }
 
-            // Using context shortcut
-            await ctx.leaveChat()
-        });
-        this.bot.command('SetActiveTopic', async (ctx) => {
-            // Explicit usage
-            // @ts-ignore
-            return this.context.send_in_group_topic(ctx.message.chat.id, "Active Topic", ctx.message.message_thread_id);
-        })
+    async process_command(command: string | any, ctx: any) {
+        switch (command) {
+            case "!setactivetopic": {
+                await this.bot.botContext.send_in_group_topic(ctx.message.chat.id, "Hello!", ctx.message.message_thread_id);
+                break;
+            }
+            case "!listCacheKeys": {
+                await this.bot.botContext.send_in_group_topic(
+                    ctx.message.chat.id,
+                    JSON.stringify({
+                        keys: this.bot.lruCache.keys(),
+                        length: Object.keys(this.bot.lruCache.keys()).length
+                    }),
+                    ctx.message.message_thread_id);
+                await this.bot.botContext.send_in_group_topic(
+                    ctx.message.chat.id,
+                    Object.keys(this.bot.lruCache.keys()).length.toString(),
+                    ctx.message.message_thread_id);
+                break;
+            }
+            case "!quit": {
+                await this.bot.botContext.send_in_group_topic(ctx.message.chat.id, "Bye!", ctx.message.message_thread_id);
+                await ctx.leaveChat()
+                break;
+            }
+        }
     }
 }

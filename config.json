@@ -1,0 +1,10 @@
+{
+  "debug": true,
+  "ratelimits": {
+    "telegram": 5,
+    "E621": 6
+  },
+  "polling": {
+    "e621": 15
+  }
+}
